@@ -6,4 +6,9 @@ public class AssetRepository
    {
         return (GameObject)Resources.Load("AssetStorage/Character", typeof(GameObject));
    }
+
+   public static GameObject GetEnemyCharacterPrefab()
+   {
+        return (GameObject)Resources.Load("AssetStorage/Character_Enemy", typeof(GameObject)); 
+   }
 }

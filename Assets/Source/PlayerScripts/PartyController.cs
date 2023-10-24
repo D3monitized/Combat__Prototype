@@ -8,7 +8,6 @@ public class PartyController : MonoBehaviour
 
     public CharDelegate OnCharacterSelected;
 
-    private List<Character> characters = new List<Character>();
     private Character selectedCharacter;
 
     #region Runtime
@@ -40,17 +39,6 @@ public class PartyController : MonoBehaviour
     #endregion
 
     #region Startup
-    private void spawnParty(int amount)
-    {
-        GameObject characterPrefab = AssetRepository.GetCharacterPrefab();
-
-        for (int i = 0; i < amount; i++)
-        {
-            Vector3 randomPos = new Vector3(Random.Range(-10, -8), 1, Random.Range(-10, 10));
-            GameObject characterClone = Instantiate(characterPrefab, randomPos, Quaternion.identity);
-            characters.Add(characterClone.GetComponent<Character>());
-        }
-    }
 
     private void Awake()
     {
@@ -63,7 +51,6 @@ public class PartyController : MonoBehaviour
 
     private void Start()
     {
-        spawnParty(InternalSettings.AMOUNT_PARTYMEMBERS);
         InputHandler.Instance.LMBPressed += onSelectButton;
     }
     #endregion
