@@ -8,8 +8,6 @@ public class PartyController : MonoBehaviour
 
     public CharDelegate OnCharacterSelected;
 
-    private InputHandler inputHandler;
-
     private List<Character> characters = new List<Character>();
     private Character selectedCharacter;
 
@@ -23,19 +21,18 @@ public class PartyController : MonoBehaviour
     private void onSelectButton(Vector2 mousePos)
     {
         RaycastHelper.LineTraceResult result = RaycastHelper.LineTrace(Camera.main, mousePos, InternalSettings.MAX_INTERACTION_DISTANCE, false);
-        DebugHelper.Instance.DrawDebugShape("PartyController_OnSelect", result.HitPosition, DebugHelper.Shape.Sphere, new Color(0, 120, 120, .5f), 1);
+        //DebugHelper.Instance.DrawDebugShape("PartyController_OnSelect", result.HitPosition, DebugHelper.Shape.Sphere, new Color(0, 120, 120, .5f), 1);
 
         Character hitCharacter = result.HitObject?.GetComponent<Character>(); 
 
         if (hitCharacter) //If clicked on character
         {
-            print("Selected Character");
             selectedCharacter = hitCharacter;
             OnCharacterSelected?.Invoke(selectedCharacter); //Event that other scripts can subscribe to
+            DebugHelper.Instance.DrawDebugShape("PartyController_Selected", hitCharacter.transform, DebugHelper.Shape.Box, Color.green, 1);
         }
         else if (selectedCharacter) //If clicked on something else
         {
-            print("Move Character");
             moveCharacter(result.HitPosition);
         }
     }
@@ -55,18 +52,6 @@ public class PartyController : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        inputHandler = GameObject.Find("InputHandler")?.GetComponent<InputHandler>();
-        
-        if (!inputHandler)
-        {
-            Debug.LogWarning("Couldn't find input handler - PartyController"); 
-        }
-
-        inputHandler.LMBPressed += onSelectButton;
-    }
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -79,6 +64,7 @@ public class PartyController : MonoBehaviour
     private void Start()
     {
         spawnParty(InternalSettings.AMOUNT_PARTYMEMBERS);
+        InputHandler.Instance.LMBPressed += onSelectButton;
     }
     #endregion
 

@@ -3,11 +3,13 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
+    public static InputHandler Instance;
 
     [HideInInspector] public Vector2 MousePosition;
     [HideInInspector] public Vector2 MouseDirection;
     [HideInInspector] public bool MMBHeld;
-    [HideInInspector] public bool LMBHeld; 
+    [HideInInspector] public bool LMBHeld;
+    [HideInInspector] public float ScrollValue;
     public event Vector2Delegate LMBPressed;
 
     private PlayerInput pInput;
@@ -28,6 +30,12 @@ public class InputHandler : MonoBehaviour
         if (context.canceled) { MMBHeld = false; }
     }
 
+    public void OnZoom(InputAction.CallbackContext context)
+    {
+        Vector2 scroll = context.action.ReadValue<Vector2>().normalized;
+        ScrollValue = -scroll.y;
+    }
+
     private void Update()
     {
         MousePosition  = Mouse.current.position.ReadValue();
@@ -36,6 +44,12 @@ public class InputHandler : MonoBehaviour
 
     private void OnEnable()
     {
+        if (Instance && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else { Instance = this; }
+
         pInput = gameObject.GetComponent<PlayerInput>();
         pInput.actions.Enable();
     }

@@ -12,6 +12,11 @@ public class DebugHelper : MonoBehaviour
         if (shapes.ContainsKey(key)) { shapes.Remove(key); }
         shapes.Add(key, new DebugShape(shapeType, pos, drawColor, size));
     }
+    public void DrawDebugShape(string key, Transform followTarget, Shape shapeType, Color drawColor, float size)
+    {
+        if (shapes.ContainsKey(key)) { shapes.Remove(key); }
+        shapes.Add(key, new DebugShape(shapeType, followTarget, drawColor, size));
+    }
 
     public void DrawDebugShape(string key, Ray ray, Color drawColor)
     {
@@ -38,17 +43,19 @@ public class DebugHelper : MonoBehaviour
         foreach(KeyValuePair<string, DebugShape> pair in shapes)
         {
             Gizmos.color = pair.Value.DrawColor;
+            Vector3 pos = pair.Value.FollowTarget != null ? pair.Value.FollowTarget.position + Vector3.up * 2 : pair.Value.Position; 
+
             if (pair.Value.DebugShapeType == Shape.Box) 
             {               
-                Gizmos.DrawCube(pair.Value.Position, Vector3.one * pair.Value.Size);
+                Gizmos.DrawCube(pos, Vector3.one * pair.Value.Size);
             }
             else if (pair.Value.DebugShapeType == Shape.Sphere)
             {                
-                Gizmos.DrawSphere(pair.Value.Position, pair.Value.Size);
+                Gizmos.DrawSphere(pos, pair.Value.Size);
             }
             else if(pair.Value.DebugShapeType == Shape.Ray)
             {
-                Gizmos.DrawRay(pair.Value.DebugRay.origin, pair.Value.DebugRay.direction * 1000); 
+                Gizmos.DrawRay(pos, pair.Value.DebugRay.direction * 1000); 
             }
         }
     }
@@ -61,7 +68,8 @@ public class DebugHelper : MonoBehaviour
         public Color DrawColor; 
         public float Size;
 
-        public Ray DebugRay; 
+        public Ray DebugRay;
+        public Transform FollowTarget; 
 
         public DebugShape(Shape shapeType, Vector3 pos, Color drawColor, float size)
         {
@@ -69,6 +77,14 @@ public class DebugHelper : MonoBehaviour
             Position = pos;
             DrawColor = drawColor;
             Size = size; 
+        }
+
+        public DebugShape(Shape shapeType, Transform followTarget, Color drawColor, float size)
+        {
+            DebugShapeType = shapeType;
+            FollowTarget = followTarget;
+            DrawColor = drawColor;
+            Size = size;
         }
 
         public DebugShape(Shape shapeType, Ray ray, Color drawColor)
