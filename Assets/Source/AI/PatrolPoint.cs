@@ -3,7 +3,10 @@ using UnityEngine.AI;
 
 public class PatrolPoint : MonoBehaviour
 {
-    [SerializeField] private float stayTimer; 
+    [SerializeField] private float stayTimer;
+    public GameObject temp;
+
+    public PatrolPointDoneDelegate OnPatrolledPoint;
 
     public void MoveCharacterToPoint(GameObject character)
     {
@@ -11,22 +14,18 @@ public class PatrolPoint : MonoBehaviour
         if (!agent) { return; }
 
         Vector3 targetPoint = new Vector3(transform.position.x, character.transform.position.y, transform.position.z);
-        agent.SetDestination(targetPoint); 
-        
-    }
-
-    private void Start()
-    {
-        stayDuration(); 
+        NavMeshAgentHelper.Instance.MoveAgent(agent, targetPoint, stayDuration);        
     }
 
     private void stayDuration()
     {
-        TimerHelper.Instance.AddTimer(gameObject.GetInstanceID().ToString(), 5, timerFinished);
+        TimerHelper.Instance.AddTimer(gameObject.GetInstanceID().ToString(), stayTimer, () => { OnPatrolledPoint?.Invoke(); });
     }
 
-    private void timerFinished()
+    private void Start()
     {
-        print("Timer finished"); 
+        MoveCharacterToPoint(temp);
     }
+
+    public delegate void PatrolPointDoneDelegate();
 }
