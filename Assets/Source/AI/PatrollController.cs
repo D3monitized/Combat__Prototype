@@ -13,8 +13,6 @@ public class PatrollController : MonoBehaviour
         a.MoveCharacterToPoint(gameObject);
         a.OnPatrolledPoint += () => { b.MoveCharacterToPoint(gameObject); };
         b.OnPatrolledPoint += () => { a.MoveCharacterToPoint(gameObject); };
-
-        TimerHelper.Instance.AddTimer(GetInstanceID().ToString(), 2, stopPatrol);
     }
 
     private void stopPatrol()

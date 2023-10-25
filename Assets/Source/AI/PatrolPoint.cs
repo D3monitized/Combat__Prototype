@@ -4,7 +4,6 @@ using UnityEngine.AI;
 public class PatrolPoint : MonoBehaviour
 {
     [SerializeField] private float stayTimer;
-    public GameObject temp;
 
     public PatrolPointDoneDelegate OnPatrolledPoint;
 
@@ -20,11 +19,6 @@ public class PatrolPoint : MonoBehaviour
     private void stayDuration()
     {
         TimerHelper.Instance.AddTimer(gameObject.GetInstanceID().ToString(), stayTimer, () => { OnPatrolledPoint?.Invoke(); });
-    }
-
-    private void Start()
-    {
-        MoveCharacterToPoint(temp);
     }
 
     public delegate void PatrolPointDoneDelegate();
