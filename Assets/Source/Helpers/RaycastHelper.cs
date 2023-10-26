@@ -2,7 +2,7 @@
 
 public class RaycastHelper
 {
-   public static LineTraceResult LineTrace(Camera cam, Vector2 screenPos, float maxDistance, bool debug = false)
+   public static LineTraceResult LineTrace(Camera cam, Vector2 screenPos, float maxDistance, LayerMask mask, bool debug = false)
    {
         LineTraceResult result = new LineTraceResult();
         Ray ray = cam.ScreenPointToRay(screenPos);
@@ -10,7 +10,7 @@ public class RaycastHelper
 
         if (debug) { DebugHelper.Instance.DrawDebugShape("RaycastHelper_Ray", ray, new Color(0, .5f, .5f, .5f)); }
        
-        if (Physics.Raycast(ray, out rayHit, maxDistance))
+        if (Physics.Raycast(ray, out rayHit, maxDistance, mask))
         {
             result.Hit         = true;
             result.HitPosition = rayHit.point;

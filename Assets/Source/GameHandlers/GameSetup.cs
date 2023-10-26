@@ -31,6 +31,6 @@ public class GameSetup : MonoBehaviour
         }
         else { Instance = this; }
 
-        spawnParty(); 
+        //spawnParty(); 
     }
 }

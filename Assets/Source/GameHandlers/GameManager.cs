@@ -3,13 +3,13 @@
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public event StateChangedDelegate OnGameStateUpdated; 
+    public event StateChangedDelegate OnGameStateUpdated;
 
-    public GameState currentState { get; private set; } 
+    public GameState CurrentState { get; private set; } 
 
     public void SetGameState(GameState state)
     {
-        currentState = state;
+        CurrentState = state;
         OnGameStateUpdated?.Invoke(state); 
     }
 
@@ -20,6 +20,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         else { Instance = this; }
+    }
+
+    private void Start()
+    {
+        SetGameState(GameState.Exploring); 
     }
 
     public enum GameState

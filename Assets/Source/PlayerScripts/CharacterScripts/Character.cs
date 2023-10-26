@@ -1,18 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public bool IsHostile;
+    
+    [HideInInspector] public int Id { get; private set; }
+    [HideInInspector] public int Initiative { get; private set; }
+    [HideInInspector] public int Damage { get; private set; }
+    [HideInInspector] public int Health { get; private set; }
 
-    // Update is called once per frame
-    void Update()
+
+    private void Start()
     {
-        
+        Id = GetInstanceID(); 
     }
 }

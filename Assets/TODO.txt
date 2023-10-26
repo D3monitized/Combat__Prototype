@@ -1,0 +1,4 @@
+TODO:
+
+Add state to characters (fighting/exploring)
+Create simple combat UI
