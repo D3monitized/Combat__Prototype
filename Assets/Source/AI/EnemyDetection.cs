@@ -7,13 +7,14 @@ public class EnemyDetection : MonoBehaviour
 {
     private SphereCollider sphereCollider;
 
-    [SerializeField] private UnityEvent<Character> onEnemyDetected; 
+    public System.Action OnEnemyDetected; 
 
     private void OnTriggerEnter(Collider other)
     {
         Character character = other.GetComponent<Character>();
         if (!character || character.IsHostile) { return; }
-        onEnemyDetected?.Invoke(character); 
+        OnEnemyDetected?.Invoke();
+        GameManager.Instance.SetGameState(GameManager.GameState.Fighting);
     }
 
     private void Start()

@@ -3,7 +3,7 @@
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public event StateChangedDelegate OnGameStateUpdated;
+    public event System.Action<GameState> OnGameStateUpdated;
 
     public GameState CurrentState { get; private set; } 
 
@@ -31,6 +31,4 @@ public class GameManager : MonoBehaviour
     {
         Fighting, Exploring
     }
-
-    public delegate void StateChangedDelegate(GameState state); 
 }

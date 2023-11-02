@@ -6,9 +6,9 @@ public class EnemyCharacterController : MonoBehaviour
 {
     private Character character; 
 
-    public void HandleEnemyDetected(Character enemyCharacter)
+    public void HandleEnemyDetected()
     {
-        CombatHandler.InitiateCombat(character, enemyCharacter); 
+        
     }
 
     private void Start()

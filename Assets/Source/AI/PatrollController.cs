@@ -6,7 +6,8 @@ public class PatrollController : MonoBehaviour
     [SerializeField] private PatrolPoint a;
     [SerializeField] private PatrolPoint b;
 
-    private NavMeshAgent agent; 
+    private NavMeshAgent agent;
+    private EnemyDetection enemyDetection;
 
     private void patrol()
     {
@@ -17,6 +18,7 @@ public class PatrollController : MonoBehaviour
 
     private void stopPatrol()
     {
+        if (!agent) { return; }
         a.OnPatrolledPoint = null;
         b.OnPatrolledPoint = null; 
         NavMeshAgentHelper.Instance.StopAgent(agent);
@@ -24,7 +26,10 @@ public class PatrollController : MonoBehaviour
 
     private void Awake()
     {
-        TryGetComponent<NavMeshAgent>(out agent); 
+        TryGetComponent<NavMeshAgent>(out agent);
+        TryGetComponent<EnemyDetection>(out enemyDetection);
+
+        enemyDetection.OnEnemyDetected += stopPatrol;
     }
 
     private void Start()

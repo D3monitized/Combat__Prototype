@@ -5,9 +5,9 @@ public class CombatHandler
 {
     private static List<Character> fighters = new List<Character>(); 
 
-    public static void InitiateCombat(Character c1, Character c2)
+    public static void InitiateCombat()
     {
-        Debug.Log("Initiating Combat: " + c1.name + " vs " + c2.name);
+        
     }
 
     public static void EndCombat()

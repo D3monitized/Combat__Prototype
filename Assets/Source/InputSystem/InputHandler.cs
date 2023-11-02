@@ -10,7 +10,7 @@ public class InputHandler : MonoBehaviour
     [HideInInspector] public bool MMBHeld;
     [HideInInspector] public bool LMBHeld;
     [HideInInspector] public float ScrollValue;
-    public event Vector2Delegate LMBPressed;
+    public event System.Action<Vector2> LMBPressed;
 
     private PlayerInput pInput;
 
@@ -53,7 +53,4 @@ public class InputHandler : MonoBehaviour
         pInput = gameObject.GetComponent<PlayerInput>();
         pInput.actions.Enable();
     }
-
-    public delegate void Vector2Delegate(Vector2 position);
-    public delegate void EventDelegate(); 
 }

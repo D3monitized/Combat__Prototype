@@ -5,22 +5,29 @@ using System.Collections.Generic;
 public class PartyController : MonoBehaviour
 {
     public static PartyController Instance;
-    public CharDelegate OnCharacterSelected;
+    public System.Action<Character> OnCharacterSelected;
     [SerializeField] private LayerMask interactableMask; 
     
     private Character selectedCharacter;
+    private NavMeshAgent selectedAgent; 
 
     #region Runtime
 
     private void moveCharacter(Vector3 position)
     {
-        selectedCharacter.GetComponent<NavMeshAgent>().SetDestination(position);
+        selectedAgent.SetDestination(position);
+    }
+
+    private void stopCharacter()
+    {
+        selectedAgent.isStopped = true; 
     }
 
     private void handleSelectedCharacter(Character hitCharacter)
     {
         if (hitCharacter.IsHostile) { return; }
         selectedCharacter = hitCharacter;
+        selectedAgent     = hitCharacter.GetComponent<NavMeshAgent>();
         OnCharacterSelected?.Invoke(selectedCharacter); //Event that other scripts can subscribe to
         DebugHelper.Instance.DrawDebugShape("PartyController_Selected", hitCharacter.transform, Vector2.up * 2, DebugHelper.Shape.Box, Color.green, 1);
     }
@@ -44,6 +51,11 @@ public class PartyController : MonoBehaviour
         }                
     }
 
+    private void handleGamestateChanged(GameManager.GameState state)
+    {
+        if (state == GameManager.GameState.Fighting) { stopCharacter(); }
+    }
+
     #endregion
 
     #region Startup
@@ -60,8 +72,7 @@ public class PartyController : MonoBehaviour
     private void Start()
     {
         InputHandler.Instance.LMBPressed += onSelectButton;
+        GameManager.Instance.OnGameStateUpdated += handleGamestateChanged;
     }
     #endregion
-
-    public delegate void CharDelegate(Character ch);
 }

@@ -5,7 +5,7 @@ public class PatrolPoint : MonoBehaviour
 {
     [SerializeField] private float stayTimer;
 
-    public PatrolPointDoneDelegate OnPatrolledPoint;
+    public System.Action OnPatrolledPoint;
 
     public void MoveCharacterToPoint(GameObject character)
     {
@@ -20,6 +20,4 @@ public class PatrolPoint : MonoBehaviour
     {
         TimerHelper.Instance.AddTimer(gameObject.GetInstanceID().ToString(), stayTimer, () => { OnPatrolledPoint?.Invoke(); });
     }
-
-    public delegate void PatrolPointDoneDelegate();
 }
