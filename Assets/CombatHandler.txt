@@ -1,0 +1,10 @@
+TODO:
+
+1. Retrieve information on combatants
+-Who's fighting? 
+
+2. Sort character turns in initiative order
+-Who fights first?
+
+3. Fire events when turn is ended/new turn starts and so on
+-Update UI and stats
